@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class UuidUtil {
     
-    Pattern regex = Pattern.compile("_.-(\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12})_\\d\\d");
+    Pattern regex = Pattern.compile("_.-(\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12})_\\d+");
                
     public UUID fromString(String uuidString)
     {

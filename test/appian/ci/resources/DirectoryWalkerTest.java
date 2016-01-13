@@ -17,8 +17,11 @@ public class DirectoryWalkerTest {
         DirectoryWalker list = new DirectoryWalker();
         Path currentDirectory = FileSystems.getDefault().getPath("");
         String[] files = list.listFileNames(currentDirectory);
-        for (String file : files) {
-            out.println(file);
+        
+        for (String file : files)
+        {
+            out.println("::" + file + "--");
+            Assert.assertTrue(file.length() > 0);
         }
         Assert.assertTrue(files.length > 0);
     }
