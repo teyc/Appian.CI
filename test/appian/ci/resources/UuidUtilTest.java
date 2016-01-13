@@ -20,5 +20,8 @@ public class UuidUtilTest {
     {   
         UuidUtil util = new UuidUtil();
         Assert.assertNotNull(util.fromString("_g-0000dc11-edca-8000-f92f-7f0000014e7a_74"));
+        Assert.assertNotNull(util.fromString("60388428-5429-4df4-a72b-3272ffa3ce8e"));
+        
+        
     }
 }
