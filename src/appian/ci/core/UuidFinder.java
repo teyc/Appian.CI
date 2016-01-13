@@ -7,9 +7,12 @@ import org.xml.sax.HandlerBase;
 import org.xml.sax.SAXException;
 
 public class UuidFinder extends HandlerBase {
+    
+    private final UuidUtil uuidUtil;
 
     public UuidFinder() {
         uuids = new LinkedList<>();
+        uuidUtil = new UuidUtil();
     }
 
     final LinkedList<String> uuids;
@@ -33,7 +36,7 @@ public class UuidFinder extends HandlerBase {
 
         boolean isUuidNode = nodeName.matches(".*(?i)(Uuid)");
 
-        if (isUuidNode) {
+        if (isUuidNode && uuidUtil.fromString(textNodeAccumulator) != null) {
             uuids.add(textNodeAccumulator);
             isUuidNode = false;
         }

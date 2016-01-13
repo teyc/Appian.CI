@@ -6,6 +6,7 @@ import appian.ci.core.UuidUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -28,7 +29,14 @@ public class ListMissingPrecedentsTest {
             new UuidUtil(),
             getSaxParser());
         
-        lister.execute(Paths.get(TESTDIR));
+        List<String> missingPrecedents = lister.execute(Paths.get(TESTDIR));
+        
+        for (String missingUuid : missingPrecedents )
+        {
+            System.out.println("Missing " + missingUuid);
+        }
+     
+        Assert.assertTrue(missingPrecedents.size() > 0);
     }
 
     @Test
