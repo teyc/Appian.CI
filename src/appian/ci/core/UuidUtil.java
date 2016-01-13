@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 public class UuidUtil {
     
+    // matches any of these
     // _g-0000dc11-edca-8000-f92f-7f0000014e7a_74
     // 0000dc11-edca-8000-f92f-7f0000014e7a       
     Pattern regex = Pattern.compile("(_.-)?(\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12})(_\\d+)?");

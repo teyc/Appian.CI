@@ -1,5 +1,8 @@
-package appian.ci.core;
+package appian.ci.commands;
 
+import appian.ci.core.DirectoryWalker;
+import appian.ci.core.UuidFinder;
+import appian.ci.core.UuidUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;

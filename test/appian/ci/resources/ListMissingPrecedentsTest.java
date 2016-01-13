@@ -1,6 +1,6 @@
 package appian.ci.resources;
 
-import appian.ci.core.ListMissingPrecedents;
+import appian.ci.commands.ListMissingPrecedents;
 import appian.ci.core.UuidFinder;
 import appian.ci.core.UuidUtil;
 import java.io.IOException;
