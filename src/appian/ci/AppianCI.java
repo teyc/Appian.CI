@@ -3,6 +3,8 @@ package appian.ci;
 import appian.ci.core.UuidUtil;
 import appian.ci.options.ListMissingPrecedents;
 import appian.ci.options.QueryNameByUuid;
+import common.Encryption;
+import common.SuggestEncrypt;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -14,13 +16,7 @@ import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.MissingOptionException;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.xml.sax.SAXException;
 
 public class AppianCI {
@@ -57,11 +53,18 @@ public class AppianCI {
                     appian.ci.commands.QueryNameByUuid queryCommand = new appian.ci.commands.QueryNameByUuid();
                     String uuids = commandLine.getOptionValue(QueryNameByUuid.UUIDS);
                     URI url = new URI(commandLine.getOptionValue(QueryNameByUuid.URL));
-                    queryCommand.execute(
-                        Arrays.asList(uuids.split(",")),
+                    String password = commandLine.getOptionValue(QueryNameByUuid.PASSWORD);
+                    String decryptionKey = commandLine.getOptionValue(QueryNameByUuid.KEY);
+                    if (decryptionKey != null) {
+                        password = new Encryption().decrypt(password, decryptionKey);
+                    }
+                    else {
+                        SuggestEncrypt.recommendCommandLineOption(System.out, password);
+                    }
+                    
+                    queryCommand.execute(Arrays.asList(uuids.split(",")),
                         url,
-                        commandLine.getOptionValue(QueryNameByUuid.USERNAME),
-                        commandLine.getOptionValue(QueryNameByUuid.PASSWORD));
+                        commandLine.getOptionValue(QueryNameByUuid.USERNAME), password);
 
                     break;
             }
