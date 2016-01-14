@@ -1,6 +1,7 @@
 package appian.ci.commands;
 
 import appian.ci.core.EndpointResolver;
+import appian.ci.core.UuidUtil;
 import common.HttpRequest;
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,18 +18,26 @@ public class QueryNameByUuid {
 
     private static final Logger logger = Logger.getLogger(QueryNameByUuid.class.getName());
     private static final String API_PATH = "webapi/getContent";
+    private final UuidUtil uuidUtil;
 
-    public Iterable<String> execute(Iterable<String> uuids, URL server, String username, String password) throws MalformedURLException {
-        List<String> result = new LinkedList<>();
+    public QueryNameByUuid(UuidUtil uuidUtil)
+    {
+        this.uuidUtil = uuidUtil;
+        
+    }
+    
+    public Iterable<Result> execute(Iterable<String> uuids, URL server, String username, String password) throws MalformedURLException {
+        
+        List<Result> results = new LinkedList<>();
 
         for (String uuid : uuids) {
-            result.add(execute(uuid, server, username, password));
+            results.add(execute(uuid, server, username, password));
         }
 
-        return result;
+        return results;
     }
 
-    public Iterable<String> executeWithFile(File uuidsFile, URL server, String username, String password) throws MalformedURLException {
+    public Iterable<Result> executeWithFile(File uuidsFile, URL server, String username, String password) throws MalformedURLException {
         try {
             try (BufferedReader reader = new BufferedReader(new FileReader(uuidsFile))) {
 
@@ -37,7 +46,6 @@ public class QueryNameByUuid {
                 while ((line = reader.readLine()) != null) {
                     uuids.add(line);
                 }
-
                 return execute(uuids, server, username, password);
             }
 
@@ -48,17 +56,39 @@ public class QueryNameByUuid {
         }
     }
 
-    private String execute(String uuid, URL server, String username, String password) throws MalformedURLException {
+    private Result execute(String uuid, URL server, String username, String password) throws MalformedURLException {
         
         URL endPoint = EndpointResolver.resolve(server, API_PATH);
 
-        logger.log(Level.INFO, "GET {0}", endPoint.toString());
+        String uuidFixed = uuidUtil.fromString(uuid).toString();
+        
+        logger.log(Level.INFO, "GET {0}?uuid={1}", new Object[] { endPoint.toString(), uuidFixed });
 
         HttpRequest request = HttpRequest
             .get(HttpRequest.append(endPoint.toString(), "uuid", uuid))
             .basic(username, password);
 
-        return request.body();
+        return new Result(uuid, uuidFixed, request.body());
     }
 
+    public class Result
+    {
+        public final String sourceUuid;
+        public final String fixedUuid;
+        public final String response;
+
+        /**
+         *
+         * @param sourceUuid
+         * @param fixedUuid
+         * @param response
+         */
+        public Result(String sourceUuid, String fixedUuid, String response)
+        {
+            this.sourceUuid = sourceUuid;
+            this.fixedUuid = fixedUuid;
+            this.response = response;
+            
+        }
+    }
 }
