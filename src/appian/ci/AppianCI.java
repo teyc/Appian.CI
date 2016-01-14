@@ -7,6 +7,7 @@ import common.Encryption;
 import common.HttpRequest;
 import common.SuggestEncrypt;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -64,9 +65,15 @@ public class AppianCI {
                     }
 
                     try {
-                        queryCommand.execute(Arrays.asList(uuids.split(",")),
+                        
+                        Iterable<String> values = queryCommand.execute(Arrays.asList(uuids.split(",")),
                             url,
                             commandLine.getOptionValue(QueryNameByUuid.USERNAME), password);
+                        
+                        for (String value : values) {
+                            out.println(value);
+                        }
+                        
                     } catch (HttpRequest.HttpRequestException httpRequestException) {
                         System.err.printf("Could not connect. Have you tried \n java -Dhttps.proxyHost=.... -Dhttps.proxyPort=... -Dhttps.proxyUser=... -Dhttps.proxyPassword=...");
                         throw httpRequestException;
