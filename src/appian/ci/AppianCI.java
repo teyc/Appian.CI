@@ -1,27 +1,10 @@
 package appian.ci;
 
-import appian.ci.core.UuidUtil;
 import appian.ci.options.ListMissingPrecedents;
 import appian.ci.options.QueryNameByUuid;
-import common.Encryption;
-import common.HttpRequest;
-import common.SuggestEncrypt;
-import java.io.File;
-import java.io.IOException;
-import static java.lang.System.out;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.FileSystems;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.cli.*;
-import org.xml.sax.SAXException;
 
 public class AppianCI {
 
@@ -45,55 +28,12 @@ public class AppianCI {
             switch (command) {
                 case "ListMissingPrecedents":
 
-                    UuidUtil uuidUtil = new UuidUtil();
-                    SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-                    appian.ci.commands.ListMissingPrecedents listCommand
-                        = new appian.ci.commands.ListMissingPrecedents(uuidUtil, saxParser);
-                    List<String> missingPrecedents = listCommand.execute(
-                        FileSystems.getDefault().getPath(commandLine.getOptionValue(ListMissingPrecedents.DIRECTORY)));
-                    for (String precedent : missingPrecedents)
-                    {
-                        out.println(precedent);
-                    }
+                    new appian.ci.applications.ListMissingPrecedents().execute(commandLine);
                     break;
 
                 case "QueryNameByUuid":
 
-                    appian.ci.commands.QueryNameByUuid queryCommand = new appian.ci.commands.QueryNameByUuid();
-                    String uuids = commandLine.getOptionValue(QueryNameByUuid.UUIDS);
-                    String uuidsFile = commandLine.getOptionValue(QueryNameByUuid.UUIDSFILE);
-                    URL url = new URL(commandLine.getOptionValue(QueryNameByUuid.URL));
-                    String password = commandLine.getOptionValue(QueryNameByUuid.PASSWORD);
-                    String decryptionKey = commandLine.getOptionValue(QueryNameByUuid.KEY);
-                    
-                    if (decryptionKey != null) {
-                        password = new Encryption().decrypt(password, decryptionKey);
-                    } else {
-                        SuggestEncrypt.recommendCommandLineOption(System.out, password);
-                    }
-
-                    try {
-                        
-                        Iterable<String> values;
-                        
-                        values = uuidsFile != null ?
-                            queryCommand.executeWithFile(
-                                new File(uuidsFile),
-                                url,
-                                commandLine.getOptionValue(QueryNameByUuid.USERNAME), password) :
-                            queryCommand.execute(Arrays.asList(
-                                uuids.split(",")),
-                                url,
-                                commandLine.getOptionValue(QueryNameByUuid.USERNAME), password);
-                        
-                        for (String value : values) {
-                            out.println(value);
-                        }
-                        
-                    } catch (HttpRequest.HttpRequestException httpRequestException) {
-                        System.err.printf("Could not connect. Have you tried \n java -Dhttps.proxyHost=.... -Dhttps.proxyPort=... -Dhttps.proxyUser=... -Dhttps.proxyPassword=...");
-                        throw httpRequestException;
-                    }
+                    new appian.ci.applications.QueryNameByUuid().execute(commandLine);
                     break;
             }
 
@@ -102,16 +42,6 @@ public class AppianCI {
             System.err.println(ex.getMessage());
             showHelp(command);
             System.exit(-1);
-
-        } catch (MalformedURLException | ParserConfigurationException | ParseException | SAXException | URISyntaxException ex) {
-
-            Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(-2);
-
-        } catch (IOException ex) {
-
-            Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(-3);
 
         } catch (Exception ex) {
 
