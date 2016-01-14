@@ -27,7 +27,7 @@ public class AppianCI {
 
     /**
      * @param args the command line arguments
-     */
+     */ 
     public static void main(String[] args) {
 
         String command = args.length > 0 ? args[0] : "";
@@ -69,21 +69,25 @@ public class AppianCI {
         } catch (MissingOptionException ex) {
 
             showHelp(command);
+            System.exit(-1);
 
         } catch (MalformedURLException | ParserConfigurationException | ParseException | SAXException | URISyntaxException ex) {
 
             Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(-2);
 
         } catch (IOException ex) {
 
             Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(-3);
 
         } catch (Exception ex) {
 
             Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(-4);
 
         }
-
+        
     }
 
     private static CommandLine parseCommandLine(Options options, String[] args) throws ParseException {
