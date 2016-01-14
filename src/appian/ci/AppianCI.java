@@ -68,6 +68,7 @@ public class AppianCI {
 
         } catch (MissingOptionException ex) {
 
+            System.err.println(ex.getMessage());
             showHelp(command);
             System.exit(-1);
 
