@@ -6,11 +6,9 @@ import java.nio.file.FileSystems;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.cli.CommandLine;
-import org.xml.sax.SAXException;
 
 public class ListMissingPrecedents
     implements IApplication {
