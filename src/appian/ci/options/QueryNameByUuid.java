@@ -23,7 +23,7 @@ public class QueryNameByUuid {
         return new Options()
                 .addOption(Option.builder(USERNAME).desc("Appian logon name").hasArg().required().build())
                 .addOption(Option.builder(PASSWORD).desc("Appian password").hasArg().required().build())
-                .addOption(Option.builder(KEY).desc("Optional decryption key for Appian password").build())
+                .addOption(Option.builder(KEY).desc("Optional decryption key for Appian password").hasArg().build())
                 .addOption(Option.builder(URL).desc("URL to Appian server including /suite e.g. https://xyz.appiancloud.com/suite").hasArg().required().build())
                 .addOptionGroup(uuidOptions);
     }
