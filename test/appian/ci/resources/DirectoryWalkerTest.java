@@ -15,7 +15,7 @@ public class DirectoryWalkerTest {
     @Test
     public void listAllFiles() throws IOException, ParserConfigurationException, SAXException {
         DirectoryWalker list = new DirectoryWalker();
-        Path currentDirectory = FileSystems.getDefault().getPath("");
+        Path currentDirectory = FileSystems.getDefault().getPath("..\\");
         String[] files = list.listFileNames(currentDirectory);
         
         for (String file : files)
