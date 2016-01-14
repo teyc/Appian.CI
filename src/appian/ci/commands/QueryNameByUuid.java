@@ -11,11 +11,12 @@ import java.util.logging.Logger;
 
 public class QueryNameByUuid {
     
-    private final Logger logger = Logger.getLogger(QueryNameByUuid.class.getName());
+    private static final Logger logger = Logger.getLogger(QueryNameByUuid.class.getName());
+    private static final String API_PATH = "webapi/getContent";
     
-    public Iterable<String> execute(Iterable<String> uuids, URI server, String username, String password) throws MalformedURLException
+    public Iterable<String> execute(Iterable<String> uuids, URL server, String username, String password) throws MalformedURLException
     {
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         
         for (String uuid : uuids)
         {
@@ -25,9 +26,9 @@ public class QueryNameByUuid {
         return result;
     }
     
-    public String execute(String uuid, URI server, String username, String password) throws MalformedURLException
+    public String execute(String uuid, URL server, String username, String password) throws MalformedURLException
     {
-        URL endPoint = server.resolve("/webapi/getContent").toURL();
+        URL endPoint = new URL(server, API_PATH);
         
         logger.log(Level.INFO, "GET {0}", endPoint.toString());
         

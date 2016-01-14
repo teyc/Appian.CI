@@ -9,8 +9,8 @@ import common.SuggestEncrypt;
 import java.io.IOException;
 import static java.lang.System.out;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileSystems;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -55,7 +55,7 @@ public class AppianCI {
 
                     appian.ci.commands.QueryNameByUuid queryCommand = new appian.ci.commands.QueryNameByUuid();
                     String uuids = commandLine.getOptionValue(QueryNameByUuid.UUIDS);
-                    URI url = new URI(commandLine.getOptionValue(QueryNameByUuid.URL));
+                    URL url = new URL(commandLine.getOptionValue(QueryNameByUuid.URL));
                     String password = commandLine.getOptionValue(QueryNameByUuid.PASSWORD);
                     String decryptionKey = commandLine.getOptionValue(QueryNameByUuid.KEY);
                     if (decryptionKey != null) {
