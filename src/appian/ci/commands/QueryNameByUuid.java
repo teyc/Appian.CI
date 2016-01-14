@@ -1,8 +1,8 @@
 package appian.ci.commands;
 
+import appian.ci.core.EndpointResolver;
 import common.HttpRequest;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class QueryNameByUuid {
     
     public String execute(String uuid, URL server, String username, String password) throws MalformedURLException
     {
-        URL endPoint = new URL(server, API_PATH);
+        URL endPoint = EndpointResolver.resolve(server, API_PATH);
         
         logger.log(Level.INFO, "GET {0}", endPoint.toString());
         

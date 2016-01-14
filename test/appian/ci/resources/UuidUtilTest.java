@@ -7,7 +7,6 @@ package appian.ci.resources;
 
 import appian.ci.core.UuidUtil;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import org.junit.Assert;
@@ -28,12 +27,4 @@ public class UuidUtilTest {
   
     }
     
-    @Test
-    public void ResolveUriTest() throws URISyntaxException, MalformedURLException
-    {
-        String serverUrl = "https://somserver.appiancloud.com/suite/";
-        URL server = new URL(serverUrl);
-        URL endPoint = new URL(server, "webapi/getContent");
-        Assert.assertEquals("/suite/webapi/getContent", endPoint.getPath());
-    }
 }
