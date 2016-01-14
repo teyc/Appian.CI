@@ -4,6 +4,7 @@ import appian.ci.core.UuidUtil;
 import appian.ci.options.ListMissingPrecedents;
 import appian.ci.options.QueryNameByUuid;
 import common.Encryption;
+import common.HttpRequest;
 import common.SuggestEncrypt;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -23,7 +24,7 @@ public class AppianCI {
 
     /**
      * @param args the command line arguments
-     */ 
+     */
     public static void main(String[] args) {
 
         String command = args.length > 0 ? args[0] : null;
@@ -58,15 +59,18 @@ public class AppianCI {
                     String decryptionKey = commandLine.getOptionValue(QueryNameByUuid.KEY);
                     if (decryptionKey != null) {
                         password = new Encryption().decrypt(password, decryptionKey);
-                    }
-                    else {
+                    } else {
                         SuggestEncrypt.recommendCommandLineOption(System.out, password);
                     }
-                    
-                    queryCommand.execute(Arrays.asList(uuids.split(",")),
-                        url,
-                        commandLine.getOptionValue(QueryNameByUuid.USERNAME), password);
 
+                    try {
+                        queryCommand.execute(Arrays.asList(uuids.split(",")),
+                            url,
+                            commandLine.getOptionValue(QueryNameByUuid.USERNAME), password);
+                    } catch (HttpRequest.HttpRequestException httpRequestException) {
+                        System.err.printf("Could not connect. Have you tried \n java -Dhttps.proxyHost=.... -Dhttps.proxyPort=... -Dhttps.proxyUser=... -Dhttps.proxyPassword=...");
+                        throw httpRequestException;
+                    }
                     break;
             }
 
@@ -92,7 +96,7 @@ public class AppianCI {
             System.exit(-4);
 
         }
-        
+
     }
 
     private static CommandLine parseCommandLine(Options options, String[] args) throws ParseException {
