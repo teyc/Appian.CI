@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,7 +32,7 @@ public class AppianCI {
         String command = args.length > 0 ? args[0] : null;
         Options options = getOptions(command);
 
-        if (options == null) {
+        if (command == null || options == null) {
             showHelp(command);
             System.exit(-21);
         }
@@ -47,8 +48,12 @@ public class AppianCI {
                     SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
                     appian.ci.commands.ListMissingPrecedents listCommand
                         = new appian.ci.commands.ListMissingPrecedents(uuidUtil, saxParser);
-                    listCommand.execute(
+                    List<String> missingPrecedents = listCommand.execute(
                         FileSystems.getDefault().getPath(commandLine.getOptionValue(ListMissingPrecedents.DIRECTORY)));
+                    for (String precedent : missingPrecedents)
+                    {
+                        out.println(precedent);
+                    }
                     break;
 
                 case "QueryNameByUuid":
