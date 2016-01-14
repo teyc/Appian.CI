@@ -26,11 +26,12 @@ public class AppianCI {
      */ 
     public static void main(String[] args) {
 
-        String command = args.length > 0 ? args[0] : "";
+        String command = args.length > 0 ? args[0] : null;
         Options options = getOptions(command);
 
         if (options == null) {
             showHelp(command);
+            System.exit(-21);
         }
 
         try {
