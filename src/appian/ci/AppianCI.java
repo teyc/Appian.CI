@@ -18,6 +18,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.xml.sax.SAXException;
@@ -31,74 +32,92 @@ public class AppianCI {
 
         String command = args.length > 0 ? args[0] : "";
         Options options = getOptions(command);
-        CommandLine commandLine;
 
-        if (options != null) {
+        if (options == null) {
+            showHelp(command);
+        }
 
-            CommandLineParser parser = new DefaultParser();
+        try {
 
-            try {
-                
-                commandLine = parser.parse(options, args);
-                switch (command) {
-                    case "ListMissingPrecedents":
-                        
-                        UuidUtil uuidUtil = new UuidUtil();
-                        SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-                        appian.ci.commands.ListMissingPrecedents listCommand = 
-                            new appian.ci.commands.ListMissingPrecedents(uuidUtil, saxParser);
-                        listCommand.execute(
-                            FileSystems.getDefault().getPath(commandLine.getOptionValue(ListMissingPrecedents.DIRECTORY)));
-                        break;
+            CommandLine commandLine = parseCommandLine(options, args);
 
-                    case "QueryNameByUuid":
-                        
-                        appian.ci.commands.QueryNameByUuid queryCommand = new appian.ci.commands.QueryNameByUuid();
-                        String uuids = commandLine.getOptionValue(QueryNameByUuid.UUIDS);
-                        URI url = new URI(commandLine.getOptionValue(QueryNameByUuid.URL));
-                        queryCommand.execute(
-                            Arrays.asList(uuids.split(",")),
-                            url,
-                            commandLine.getOptionValue(QueryNameByUuid.USERNAME),
-                            commandLine.getOptionValue(QueryNameByUuid.PASSWORD));
-                            
-                        break;
-                }
-                
-            } catch (MalformedURLException | ParserConfigurationException | ParseException | SAXException | URISyntaxException ex) {
-                
-                Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
-                
-            } catch (IOException ex) {
-                
-                Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
-                
-            } catch (Exception ex) {
-                
-                Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
-                
+            switch (command) {
+                case "ListMissingPrecedents":
+
+                    UuidUtil uuidUtil = new UuidUtil();
+                    SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+                    appian.ci.commands.ListMissingPrecedents listCommand
+                        = new appian.ci.commands.ListMissingPrecedents(uuidUtil, saxParser);
+                    listCommand.execute(
+                        FileSystems.getDefault().getPath(commandLine.getOptionValue(ListMissingPrecedents.DIRECTORY)));
+                    break;
+
+                case "QueryNameByUuid":
+
+                    appian.ci.commands.QueryNameByUuid queryCommand = new appian.ci.commands.QueryNameByUuid();
+                    String uuids = commandLine.getOptionValue(QueryNameByUuid.UUIDS);
+                    URI url = new URI(commandLine.getOptionValue(QueryNameByUuid.URL));
+                    queryCommand.execute(
+                        Arrays.asList(uuids.split(",")),
+                        url,
+                        commandLine.getOptionValue(QueryNameByUuid.USERNAME),
+                        commandLine.getOptionValue(QueryNameByUuid.PASSWORD));
+
+                    break;
             }
 
+        } catch (MissingOptionException ex) {
+
+            showHelp(command);
+
+        } catch (MalformedURLException | ParserConfigurationException | ParseException | SAXException | URISyntaxException ex) {
+
+            Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ex) {
+
+            Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (Exception ex) {
+
+            Logger.getLogger(AppianCI.class.getName()).log(Level.SEVERE, null, ex);
+
         }
+
+    }
+
+    private static CommandLine parseCommandLine(Options options, String[] args) throws ParseException {
+        CommandLineParser parser = new DefaultParser();
+        CommandLine commandLine = parser.parse(options, args);
+        return commandLine;
     }
 
     public static Options getOptions(String command) {
-        
-        if (ListMissingPrecedents.class.getSimpleName().equals(command)) {
+
+        if (ListMissingPrecedents.class.getSimpleName().equalsIgnoreCase(command)) {
             return new ListMissingPrecedents().getOptions();
         }
 
-        if (QueryNameByUuid.class.getSimpleName().equals(command)) {
+        if (QueryNameByUuid.class.getSimpleName().equalsIgnoreCase(command)) {
             return new QueryNameByUuid().getOptions();
         }
 
+        return null;
+
+    }
+
+    private static void showHelp(String command) {
         String header = "";
         String footer = "";
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(76, "./Appian.CI ListMissingPrecedents", header, getOptions(ListMissingPrecedents.class.getSimpleName()), footer);
-        formatter.printHelp(76, "./Appian.CI QueryNameByUuid", header, getOptions(QueryNameByUuid.class.getSimpleName()), footer);
 
-        return null;
+        if (command == null || ListMissingPrecedents.class.getSimpleName().equals(command)) {
+            formatter.printHelp(76, "./Appian.CI " + ListMissingPrecedents.class.getSimpleName(), header, getOptions(ListMissingPrecedents.class.getSimpleName()), footer);
+        }
+
+        if (command == null || QueryNameByUuid.class.getSimpleName().equals(command)) {
+            formatter.printHelp(76, "./Appian.CI " + QueryNameByUuid.class.getSimpleName(), header, getOptions(QueryNameByUuid.class.getSimpleName()), footer);
+        }
 
     }
 }
