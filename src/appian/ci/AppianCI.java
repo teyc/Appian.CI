@@ -6,6 +6,7 @@ import appian.ci.options.QueryNameByUuid;
 import common.Encryption;
 import common.HttpRequest;
 import common.SuggestEncrypt;
+import java.io.File;
 import java.io.IOException;
 import static java.lang.System.out;
 import java.net.MalformedURLException;
@@ -60,9 +61,11 @@ public class AppianCI {
 
                     appian.ci.commands.QueryNameByUuid queryCommand = new appian.ci.commands.QueryNameByUuid();
                     String uuids = commandLine.getOptionValue(QueryNameByUuid.UUIDS);
+                    String uuidsFile = commandLine.getOptionValue(QueryNameByUuid.UUIDSFILE);
                     URL url = new URL(commandLine.getOptionValue(QueryNameByUuid.URL));
                     String password = commandLine.getOptionValue(QueryNameByUuid.PASSWORD);
                     String decryptionKey = commandLine.getOptionValue(QueryNameByUuid.KEY);
+                    
                     if (decryptionKey != null) {
                         password = new Encryption().decrypt(password, decryptionKey);
                     } else {
@@ -71,9 +74,17 @@ public class AppianCI {
 
                     try {
                         
-                        Iterable<String> values = queryCommand.execute(Arrays.asList(uuids.split(",")),
-                            url,
-                            commandLine.getOptionValue(QueryNameByUuid.USERNAME), password);
+                        Iterable<String> values;
+                        
+                        values = uuidsFile != null ?
+                            queryCommand.executeWithFile(
+                                new File(uuidsFile),
+                                url,
+                                commandLine.getOptionValue(QueryNameByUuid.USERNAME), password) :
+                            queryCommand.execute(Arrays.asList(
+                                uuids.split(",")),
+                                url,
+                                commandLine.getOptionValue(QueryNameByUuid.USERNAME), password);
                         
                         for (String value : values) {
                             out.println(value);
