@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package appian.ci.resources;
 
 import appian.ci.core.UuidUtil;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -18,13 +12,29 @@ import org.junit.Test;
  */
 public class UuidUtilTest {
     
+    static UuidUtil util;
+    
+    @BeforeClass
+    public static void beforeClass()
+    {
+        util = new UuidUtil();
+    }
+    
     @Test
-    public void Test()
+    public void parsedUuids()
     {   
-        UuidUtil util = new UuidUtil();
+        Assert.assertEquals(
+            "0000dc11-edca-8000-f92f-7f0000014e7a", 
+            util.fromString("_g-0000dc11-edca-8000-f92f-7f0000014e7a_74").toString());
+    }
+
+    @Test
+    public void uuidsAreDetected()
+    {   
         Assert.assertNotNull(util.fromString("_g-0000dc11-edca-8000-f92f-7f0000014e7a_74"));
         Assert.assertNotNull(util.fromString("60388428-5429-4df4-a72b-3272ffa3ce8e"));
-  
+        
+        Assert.assertNull(util.fromString("H0388428-5429-4df4-a72b-3272ffa3ce8e"));
     }
     
 }
