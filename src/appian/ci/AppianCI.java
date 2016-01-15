@@ -1,7 +1,6 @@
 package appian.ci;
 
-import appian.ci.options.ListMissingPrecedents;
-import appian.ci.options.QueryNameByUuid;
+import appian.ci.options.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.cli.*;
@@ -34,6 +33,11 @@ public class AppianCI {
                 case "QueryNameByUuid":
 
                     new appian.ci.applications.QueryNameByUuid().execute(commandLine);
+                    break;
+                    
+                case "GetLogFile":
+                    
+                    new appian.ci.applications.GetLogFile().execute(commandLine);
                     break;
             }
 
@@ -68,6 +72,10 @@ public class AppianCI {
             return new QueryNameByUuid().getOptions();
         }
 
+        if (GetLogFile.class.getSimpleName().equalsIgnoreCase(command)) {
+            return new GetLogFile().getOptions();
+        }
+        
         return null;
 
     }
@@ -85,5 +93,8 @@ public class AppianCI {
             formatter.printHelp(76, "./Appian.CI " + QueryNameByUuid.class.getSimpleName(), header, getOptions(QueryNameByUuid.class.getSimpleName()), footer);
         }
 
+        if (command == null || GetLogFile.class.getSimpleName().equals(command)) {
+            formatter.printHelp(76, "./Appian.CI " + GetLogFile.class.getSimpleName(), header, getOptions(GetLogFile.class.getSimpleName()), footer);
+        }
     }
 }
