@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 public class ListMissingPrecedents {
 
     private String[] filenames;
-    private Logger logger = Logger.getLogger(ListMissingPrecedents.class.getName());
+    private final static Logger logger = Logger.getLogger(ListMissingPrecedents.class.getName());
     private final UuidUtil uuidUtil;
     private final SAXParser saxParser;
     
