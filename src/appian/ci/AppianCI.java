@@ -17,6 +17,11 @@ public class AppianCI {
 
         if (command == null || options == null) {
             showHelp(command);
+            
+            if (options == null) {
+                System.err.println("I don't understand '" + command + "' command");
+            }
+            
             System.exit(-21);
         }
 
@@ -39,6 +44,10 @@ public class AppianCI {
                     
                     new appian.ci.applications.GetLogFile().execute(commandLine);
                     break;
+                    
+                default:
+                    
+                    System.err.println("I don't understand '" + command + "' command");
             }
 
         } catch (MissingOptionException ex) {
@@ -85,16 +94,17 @@ public class AppianCI {
         String footer = "";
         HelpFormatter formatter = new HelpFormatter();
 
-        if (command == null || ListMissingPrecedents.class.getSimpleName().equals(command)) {
-            formatter.printHelp(76, "./Appian.CI " + ListMissingPrecedents.class.getSimpleName(), header, getOptions(ListMissingPrecedents.class.getSimpleName()), footer);
+        for (Class klass : new Class[] { 
+                ListMissingPrecedents.class, 
+                QueryNameByUuid.class,
+                GetLogFile.class })
+        {
+            final String simpleName = klass.getSimpleName();
+            
+            if (command == null || simpleName.equals(command)) {
+                formatter.printHelp(76, "./Appian.CI " + simpleName, header, getOptions(simpleName), footer);
+            }
         }
-
-        if (command == null || QueryNameByUuid.class.getSimpleName().equals(command)) {
-            formatter.printHelp(76, "./Appian.CI " + QueryNameByUuid.class.getSimpleName(), header, getOptions(QueryNameByUuid.class.getSimpleName()), footer);
-        }
-
-        if (command == null || GetLogFile.class.getSimpleName().equals(command)) {
-            formatter.printHelp(76, "./Appian.CI " + GetLogFile.class.getSimpleName(), header, getOptions(GetLogFile.class.getSimpleName()), footer);
-        }
+        
     }
 }
