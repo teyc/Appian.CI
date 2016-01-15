@@ -3,6 +3,7 @@ package appian.ci.commands;
 import appian.ci.core.EndpointResolver;
 import common.HttpRequest;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GetLogFile {
@@ -12,9 +13,21 @@ public class GetLogFile {
     public String execute(URL url, String logFileId, String username, String password) {
         
         URL logFileUrl = EndpointResolver.resolve(url, "doc/" + logFileId);
-        return HttpRequest.get(logFileUrl)
-                          .basic(username, password)
-                          .body();
+        
+        logger.log(Level.INFO, "GET {0}", logFileUrl.toString());
+        
+        HttpRequest request = HttpRequest.get(logFileUrl)
+                                .basic(username, password);
+        
+        for (String header : request.headers().keySet())
+        {
+            for (String item : request.headers(header))
+            {
+                logger.log(Level.INFO, "Response {0}: {1}", new Object[]{header, item});                
+            }
+        }
+        
+        return request.body();
     }
     
 }
