@@ -1,4 +1,4 @@
-package appian.ci.commands;
+package appian.ci.querynamebyuuid;
 
 import appian.ci.core.EndpointResolver;
 import appian.ci.core.UuidUtil;
@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class QueryNameByUuid {
+public class Command {
 
-    private static final Logger logger = Logger.getLogger(QueryNameByUuid.class.getName());
+    private static final Logger logger = Logger.getLogger(Command.class.getName());
     private static final String API_PATH = "webapi/getContent";
     private final UuidUtil uuidUtil;
 
-    public QueryNameByUuid(UuidUtil uuidUtil)
+    public Command(UuidUtil uuidUtil)
     {
         this.uuidUtil = uuidUtil;
         
@@ -51,7 +51,7 @@ public class QueryNameByUuid {
 
         } catch (IOException ex) {
 
-            Logger.getLogger(QueryNameByUuid.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
         }
     }

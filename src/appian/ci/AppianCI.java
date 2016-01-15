@@ -1,6 +1,6 @@
 package appian.ci;
 
-import appian.ci.options.*;
+import common.IOptions;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.cli.*;
@@ -17,11 +17,11 @@ public class AppianCI {
 
         if (command == null || options == null) {
             showHelp(command);
-            
+
             if (options == null) {
                 System.err.println("I don't understand '" + command + "' command");
             }
-            
+
             System.exit(-21);
         }
 
@@ -32,21 +32,21 @@ public class AppianCI {
             switch (command) {
                 case "ListMissingPrecedents":
 
-                    new appian.ci.applications.ListMissingPrecedents().execute(commandLine);
+                    new appian.ci.listmissingprecedents.Application().execute(commandLine);
                     break;
 
                 case "QueryNameByUuid":
 
-                    new appian.ci.applications.QueryNameByUuid().execute(commandLine);
+                    new appian.ci.querynamebyuuid.Application().execute(commandLine);
                     break;
-                    
+
                 case "GetLogFile":
-                    
-                    new appian.ci.applications.GetLogFile().execute(commandLine);
+
+                    new appian.ci.getlogfile.Application().execute(commandLine);
                     break;
-                    
+
                 default:
-                    
+
                     System.err.println("I don't understand '" + command + "' command");
             }
 
@@ -65,6 +65,19 @@ public class AppianCI {
 
     }
 
+    private static Class[] getOptionTypes() {
+        return new Class[]{
+            appian.ci.getlogfile.CommandlineOptions.class,
+            appian.ci.querynamebyuuid.CommandlineOptions.class,
+            appian.ci.listmissingprecedents.CommandlineOptions.class
+        };
+    }
+
+    private static String getCommandName(Class klass) {
+        String[] names = klass.getPackage().getName().split("\\.", 4);
+        return names[names.length - 1];
+    }
+
     private static CommandLine parseCommandLine(Options options, String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
         CommandLine commandLine = parser.parse(options, args);
@@ -73,18 +86,16 @@ public class AppianCI {
 
     public static Options getOptions(String command) {
 
-        if (ListMissingPrecedents.class.getSimpleName().equalsIgnoreCase(command)) {
-            return new ListMissingPrecedents().getOptions();
+        for (Class klass : getOptionTypes()) {
+            if (getCommandName(klass).equalsIgnoreCase(command)) {
+                try {
+                    return ((IOptions) klass.newInstance()).getOptions();
+                } catch (InstantiationException | IllegalAccessException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         }
 
-        if (QueryNameByUuid.class.getSimpleName().equalsIgnoreCase(command)) {
-            return new QueryNameByUuid().getOptions();
-        }
-
-        if (GetLogFile.class.getSimpleName().equalsIgnoreCase(command)) {
-            return new GetLogFile().getOptions();
-        }
-        
         return null;
 
     }
@@ -94,17 +105,18 @@ public class AppianCI {
         String footer = "";
         HelpFormatter formatter = new HelpFormatter();
 
-        for (Class klass : new Class[] { 
-                ListMissingPrecedents.class, 
-                QueryNameByUuid.class,
-                GetLogFile.class })
-        {
-            final String simpleName = klass.getSimpleName();
+        for (Class klass : getOptionTypes()) {
             
-            if (command == null || simpleName.equals(command)) {
-                formatter.printHelp(76, "./Appian.CI " + simpleName, header, getOptions(simpleName), footer);
+            final String simpleName = getCommandName(klass);
+
+            if (command == null) {
+                formatter.printHelp(76, "./Appian.CI " + simpleName, header, getOptions(command), footer);
+            }
+
+            if (simpleName.equalsIgnoreCase(command)) {
+                formatter.printHelp(76, "./Appian.CI " + simpleName, header, getOptions(command), footer);
             }
         }
-        
+
     }
 }

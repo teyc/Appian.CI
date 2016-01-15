@@ -1,5 +1,5 @@
 
-package appian.ci.applications;
+package common;
 
 import org.apache.commons.cli.CommandLine;
 

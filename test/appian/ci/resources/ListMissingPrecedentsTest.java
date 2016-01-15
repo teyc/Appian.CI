@@ -1,6 +1,6 @@
 package appian.ci.resources;
 
-import appian.ci.commands.ListMissingPrecedents;
+import appian.ci.listmissingprecedents.Command;
 import appian.ci.core.UuidFinder;
 import appian.ci.core.UuidUtil;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class ListMissingPrecedentsTest {
     @Test
     public void findMissingPrecedents() throws Exception 
     {
-        ListMissingPrecedents lister = new ListMissingPrecedents(
+        Command lister = new Command(
             new UuidUtil(),
             getSaxParser());
         

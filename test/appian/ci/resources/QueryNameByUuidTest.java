@@ -56,7 +56,7 @@ public class QueryNameByUuidTest {
 
     private void assertParsesWithNoExceptions(String[] arguments) throws ParseException {
         CommandLine parsed = new DefaultParser().parse(
-            new appian.ci.options.QueryNameByUuid().getOptions(),
+            new appian.ci.querynamebyuuid.CommandlineOptions().getOptions(),
             arguments);
     }
 }

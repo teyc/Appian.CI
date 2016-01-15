@@ -1,4 +1,4 @@
-package appian.ci.commands;
+package appian.ci.getlogfile;
 
 import appian.ci.core.EndpointResolver;
 import common.HttpRequest;
@@ -6,9 +6,9 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GetLogFile {
+public class Command {
     
-    private static final Logger logger = Logger.getLogger(ListMissingPrecedents.class.getName());
+    private static final Logger logger = Logger.getLogger(appian.ci.listmissingprecedents.Command.class.getName());
     
     public String execute(URL url, String logFileId, String username, String password) {
         

@@ -1,5 +1,6 @@
-package appian.ci.applications;
+package appian.ci.listmissingprecedents;
 
+import common.IApplication;
 import appian.ci.core.UuidUtil;
 import static java.lang.System.out;
 import java.nio.file.FileSystems;
@@ -10,7 +11,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.cli.CommandLine;
 
-public class ListMissingPrecedents
+public class Application
     implements IApplication {
 
     @Override
@@ -19,15 +20,15 @@ public class ListMissingPrecedents
         try {
             UuidUtil uuidUtil = new UuidUtil();
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-            appian.ci.commands.ListMissingPrecedents listCommand
-                = new appian.ci.commands.ListMissingPrecedents(uuidUtil, saxParser);
+            appian.ci.listmissingprecedents.Command listCommand
+                = new appian.ci.listmissingprecedents.Command(uuidUtil, saxParser);
             List<String> missingPrecedents = listCommand.execute(
-                FileSystems.getDefault().getPath(commandLine.getOptionValue(appian.ci.options.ListMissingPrecedents.DIRECTORY)));
+                FileSystems.getDefault().getPath(commandLine.getOptionValue(appian.ci.listmissingprecedents.CommandlineOptions.DIRECTORY)));
             for (String precedent : missingPrecedents) {
                 out.println(precedent);
             }
         } catch (Exception ex) {
-            Logger.getLogger(ListMissingPrecedents.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
         }
     }

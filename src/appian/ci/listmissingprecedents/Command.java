@@ -1,4 +1,4 @@
-package appian.ci.commands;
+package appian.ci.listmissingprecedents;
 
 import appian.ci.core.DirectoryWalker;
 import appian.ci.core.UuidFinder;
@@ -15,14 +15,14 @@ import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import org.xml.sax.SAXException;
 
-public class ListMissingPrecedents {
+public class Command {
 
     private String[] filenames;
-    private final static Logger logger = Logger.getLogger(ListMissingPrecedents.class.getName());
+    private final static Logger logger = Logger.getLogger(Command.class.getName());
     private final UuidUtil uuidUtil;
     private final SAXParser saxParser;
     
-    public ListMissingPrecedents(UuidUtil uuidUtil, SAXParser saxParser)
+    public Command(UuidUtil uuidUtil, SAXParser saxParser)
     {
         this.uuidUtil = uuidUtil;
         this.saxParser = saxParser;

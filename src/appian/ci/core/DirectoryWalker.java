@@ -1,6 +1,5 @@
 package appian.ci.core;
 
-import appian.ci.commands.QueryNameByUuid;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import static java.nio.file.FileVisitResult.*;
@@ -15,7 +14,7 @@ import java.util.logging.Logger;
 
 public class DirectoryWalker {
     
-    private static final Logger logger = Logger.getLogger(QueryNameByUuid.class.getName());
+    private static final Logger logger = Logger.getLogger(DirectoryWalker.class.getName());
     
     public String[] listFileNames(Path directory) throws IOException
     {
