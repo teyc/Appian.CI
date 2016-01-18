@@ -25,69 +25,51 @@ $httpProxyPort_Opts = "-Dhttps.proxyPort=80"
 $httpProxyUsername_Opts = "-Dhttps.proxyUser=joe.bloggs"
 $httpProxyPassword_Opts = "-Dhttps.proxyPassword=supersecret"
 
-java -jar .\dist\Appian.CI.jar ListMissingPrecedents -directory $fullDirectory > missing.txt
+$appianCiJarPath = ".\dist\Appian.CI.jar"
 
-java `
-  $httpProxyHost_Opts $httpProxyPort_Opts $httpProxyUsername_Opts $httpProxyPassword_Opts ` 
-  -jar .\dist\Appian.CI.jar QueryNameByUuid `
-  -uuidsFile missing.txt `
-  -url https://dev.appiancloud.com/suite `
-  -username joe.bloggs `
-  -key GamlMtaAVHgTbjwsx2A2WB1w= `
-  -password vWG6ipOP2Iw= > dev.txt
+java -jar $appianCiJarPath ListMissingPrecedents -directory $fullDirectory > missing.txt
 
-java `
-  $httpProxyHost_Opts $httpProxyPort_Opts $httpProxyUsername_Opts $httpProxyPassword_Opts ` 
-  -jar .\dist\Appian.CI.jar QueryNameByUuid `
-  -uuidsFile missing.txt `
-  -url https://test.appiancloud.com/suite `
-  -username joe.bloggs `
-  -key GamlMtaAVHgTbjwsx2A2WB1w= `
-  -password vWG6ipOP2Iw= > test.txt
+$environments = @(
+  @{ Name="Dev"      ; Url = "https://dev.appiancloud.com/suite" }, 
+  @{ Name="Test"     ; Url = "https://test.appiancloud.com/suite" }, 
+  @{ Name="UAT"      ; Url = "https://uat.appiancloud.com/suite" }, 
+  @{ Name="Staging"  ; Url = "https://staging.appiancloud.com/suite" }, 
+  @{ Name="Prod"     ; Url = "https://prod.appiancloud.com/suite" }
+);
 
-java `
-  $httpProxyHost_Opts $httpProxyPort_Opts $httpProxyUsername_Opts $httpProxyPassword_Opts ` 
-  -jar .\dist\Appian.CI.jar QueryNameByUuid `
-  -uuidsFile missing.txt `
-  -url https://uat.appiancloud.com/suite `
-  -username joe.bloggs `
-  -key GamlMtaAVHgTbjwsx2A2WB1w= `
-  -password vWG6ipOP2Iw= > uat.txt
+$environments | % {
 
-java `
-  $httpProxyHost_Opts $httpProxyPort_Opts $httpProxyUsername_Opts $httpProxyPassword_Opts ` 
-  -jar .\dist\Appian.CI.jar QueryNameByUuid `
-  -uuidsFile missing.txt `
-  -url https://prod.appiancloud.com/suite `
-  -username joe.bloggs `
-  -key GamlMtaAVHgTbjwsx2A2WB1w= `
-  -password vWG6ipOP2Iw= > prod.txt
+    $EnvironmentName = $_.Name
 
-java `
-  -jar .\dist\Appian.CI.jar CompareMissing `
-  -source dev.txt `
-  -target test.txt `
-  -targetname "TEST" `
-  > test.xml
+    $OutFile = "$EnvironmentName.txt"
 
-java `
-  -jar .\dist\Appian.CI.jar CompareMissing `
-  -source dev.txt `
-  -target uat.txt `
-  -targetname "UAT" `
-  > uat.xml
+    Write-Verbose "QueryNameByUuid $($_.Url) "
 
-java `
-  -jar .\dist\Appian.CI.jar CompareMissing `
-  -source dev.txt `
-  -target uat.txt `
-  -targetname "STAGING" `
-  > staging.xml
+    java $httpProxyHost_Opts $httpProxyPort_Opts $httpProxyUsername_Opts $httpProxyPassword_Opts `
+      -jar $appianCiJarPath QueryNameByUuid `
+      -uuidsFile missing.txt `
+      -url $_.Url `
+      -username joe.bloggs `
+      -key GamLGtaAVHgTbjwsx2A2WB1w= `
+      -password vWG6ipOP2Iw= > $OutFile
+}
 
-java `
-  -jar .\dist\Appian.CI.jar CompareMissing `
-  -source dev.txt `
-  -target uat.txt `
-  -targetname "PROD" `
-  > prod.xml
+$environments | % {
 
+    $EnvironmentName = $_.Name
+
+    $OutFile = "$EnvironmentName.xml"
+    $TargetFileName = "$EnvironmentName.txt"
+
+    if ($EnvironmentName -ne "Dev")
+    {
+        Write-Verbose "CompareMissing $($_.URL) "
+
+        java `
+          -jar .\dist\Appian.CI.jar CompareMissing `
+          -source dev.txt `
+          -target $TargetFileName `
+          -targetname $EnvironmentName `
+          > $OutFile
+    }
+}
