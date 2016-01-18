@@ -56,7 +56,7 @@ public class ListMissingPrecedentsTest {
         String resourceFileName = "appian/ci/resources/0002dc47-c97e-8000-f92f-7f0000014e7a.xml";
         
         List<String> uuidsFound = findAllUuidsFromResource(resourceFileName, "processModel\\");
-        Assert.assertEquals(3, uuidsFound.size());
+        Assert.assertEquals(6, uuidsFound.size());
     }
     
     private List<String> findAllUuidsFromResource(String resourceFileName, String apparentDirectory) 
