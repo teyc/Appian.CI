@@ -75,7 +75,7 @@ public class Command {
             final String sourceDescription = uuidToDescriptionSource.get(uuid);
             final String targetDescription = uuidToDescriptionTarget.get(uuid);
             if (!sourceDescription.equals(targetDescription)) {
-                if (targetDescription.equals("Process Model Not Found")) {
+                if (targetDescription == null || targetDescription.equals("Process Model Not Found")) {
                     missingObjects.add(new AppianObject(uuid, sourceDescription));
                 }
             }
