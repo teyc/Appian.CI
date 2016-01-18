@@ -68,13 +68,20 @@ public class Command {
 
         String uuidFixed = uuidUtil.fromString(uuid);
         
-        logger.log(Level.INFO, "GET {0}?uuid={1} orig={2}", new Object[] { endPoint.toString(), uuidFixed, uuid });
-
         HttpRequest request = HttpRequest
             .get(HttpRequest.append(endPoint.toString(), "uuid", uuid))
             .basic(username, password);
 
-        return new Result(uuid, uuidFixed, request.body());
+        logger.log(Level.INFO, "{2} GET {0}?uuid={1}", new Object[] { endPoint.toString(), uuidFixed, request.code() });
+
+        if (request.code() == 200)
+        {
+            return new Result(uuid, uuidFixed, request.body());
+        }
+        else
+        {
+            throw new RuntimeException(request.code() + " " + request.message());
+        }
     }
 
     public class Result
