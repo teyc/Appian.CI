@@ -30,6 +30,11 @@ public class AppianCI {
             CommandLine commandLine = parseCommandLine(options, args);
 
             switch (command) {
+                
+                case "CompareMissing":
+                    new appian.ci.comparemissing.Application().execute(commandLine);
+                    break;
+                    
                 case "ListMissingPrecedents":
 
                     new appian.ci.listmissingprecedents.Application().execute(commandLine);
@@ -67,6 +72,7 @@ public class AppianCI {
 
     private static Class[] getOptionTypes() {
         return new Class[]{
+            appian.ci.comparemissing.CommandlineOptions.class,
             appian.ci.getlogfile.CommandlineOptions.class,
             appian.ci.querynamebyuuid.CommandlineOptions.class,
             appian.ci.listmissingprecedents.CommandlineOptions.class

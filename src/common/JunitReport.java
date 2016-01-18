@@ -12,6 +12,7 @@ import java.util.List;
 public class JunitReport {
 
     List<String> errors = new LinkedList<>();
+    private String name = "";
     
     public void addError(String message)
     {
@@ -25,7 +26,8 @@ public class JunitReport {
             BufferedWriter writer = new BufferedWriter(outStreamWriter))
         {
             writer.write("<?xml version\"1.0\" ?>\n");
-            writer.write(String.format("<testsuite errors=\"%d\" failures=\"0\" tests=\"%d\" time=\"0.000\" >\n",
+            writer.write(String.format("<testsuite name=\"%s\" errors=\"%d\" failures=\"0\" tests=\"%d\" time=\"0.000\" >\n",
+                quote(name),
                 errors.size(),
                 errors.size()
             ));
@@ -52,5 +54,10 @@ public class JunitReport {
         return s.replace("<", "&lt;")
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;");
+    }
+
+    public JunitReport name(String name) {
+        this.name = name;
+        return this;
     }
 }
