@@ -10,10 +10,12 @@ public class UuidFinder extends DefaultHandler {
     
     private final UuidUtil uuidUtil;
     private final String uuidMatch = ".*(?i)(Uuid)";
+    private final String fileName;
     
-    public UuidFinder() {
+    public UuidFinder(String fileName) {
         uuids = new LinkedList<>();
         uuidUtil = new UuidUtil();
+        this.fileName = fileName;
     }
 
     final LinkedList<String> uuids;
@@ -25,6 +27,14 @@ public class UuidFinder extends DefaultHandler {
         currentNodeName = qName;
         textNodeAccumulator = "";
      
+        // <node uuid="..."> in processModels should not be reported 
+        // as a precedent because it is already contained in the very
+        // file itself.
+        if (isProcessModelFile(fileName) && "node".equals(qName))
+        {
+            return;
+        }
+        
         for (int i = 0; i < attributes.getLength(); i++) {
             String attributeQName = attributes.getQName(i);
             String attributeValue = attributes.getValue(i);
@@ -56,5 +66,9 @@ public class UuidFinder extends DefaultHandler {
 
     public List<String> getUuids() {
         return uuids;
+    }
+
+    private boolean isProcessModelFile(String fileName) {
+        return fileName.contains("processModel/");
     }
 }

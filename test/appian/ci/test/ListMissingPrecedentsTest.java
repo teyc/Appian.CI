@@ -48,10 +48,11 @@ public class ListMissingPrecedentsTest {
             .getClassLoader()
             .getResourceAsStream("appian/ci/resources/dc36.xml");
 
-        UuidFinder uuidFinder = new UuidFinder();
+        UuidFinder uuidFinder = new UuidFinder("processModel/00000dc36-a2d8-8000-f92f-8f0000014e7a");
         saxParser.parse(inputStream, uuidFinder);
         
-        Assert.assertTrue(uuidFinder.getUuids().size() > 0);
+        List<String> uuidsFound = uuidFinder.getUuids();
+        Assert.assertEquals(3, uuidsFound.size());
 
     }
 

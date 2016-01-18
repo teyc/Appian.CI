@@ -84,7 +84,7 @@ public class Command {
     {
         if (fileName.endsWith(".xml")) 
         {
-            UuidFinder uuidFinder = new UuidFinder();       
+            UuidFinder uuidFinder = new UuidFinder(fileName);       
             saxParser.parse(new File(fileName), uuidFinder);      
             return uuidFinder.getUuids();
         }
