@@ -1,4 +1,4 @@
-package appian.ci.resources;
+package appian.ci.test;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;

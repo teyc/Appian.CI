@@ -1,4 +1,4 @@
-package appian.ci.resources;
+package appian.ci.test;
 
 import appian.ci.core.DirectoryWalker;
 import java.io.IOException;

@@ -1,5 +1,5 @@
 
-package appian.ci.resources;
+package appian.ci.test;
 
 import appian.ci.core.UuidUtil;
 import org.junit.Assert;
@@ -21,10 +21,9 @@ public class UuidUtilTest {
     }
     
     @Test
-    public void processModelFoldersAreNotUuids()
+    public void processModelFoldersAreUuids()
     {   
-        /* This is an Appian bug */
-        Assert.assertNull(
+        Assert.assertEquals("_g-0000dc11-edca-8000-f92f-7f0000014e7a_74",
             util.fromString("_g-0000dc11-edca-8000-f92f-7f0000014e7a_74"));
     }
 

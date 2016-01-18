@@ -1,4 +1,4 @@
-package appian.ci.resources;
+package appian.ci.test;
 
 import appian.ci.listmissingprecedents.Command;
 import appian.ci.core.UuidFinder;

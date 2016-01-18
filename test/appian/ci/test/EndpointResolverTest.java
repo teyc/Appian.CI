@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package appian.ci.resources;
+package appian.ci.test;
 
 import appian.ci.core.EndpointResolver;
 import java.net.MalformedURLException;
