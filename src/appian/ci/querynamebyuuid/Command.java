@@ -31,6 +31,13 @@ public class Command {
         List<Result> results = new LinkedList<>();
 
         for (String uuid : uuids) {
+            
+            if (uuidUtil.isProcessModelFolder(uuid) ||
+                uuidUtil.isUserGroup(uuid))
+            {
+                continue;
+            }
+            
             results.add(execute(uuid, server, username, password));
         }
 

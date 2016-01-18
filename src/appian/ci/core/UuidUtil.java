@@ -22,4 +22,12 @@ public class UuidUtil {
         
         return null;
     }
+
+    public boolean isProcessModelFolder(String uuid) {
+        return uuid.startsWith("_g-");
+    }
+
+    public boolean isUserGroup(String uuid) {
+        return uuid.startsWith("_e-");
+    }
 }
