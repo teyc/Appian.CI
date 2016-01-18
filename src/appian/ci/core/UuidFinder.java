@@ -69,6 +69,6 @@ public class UuidFinder extends DefaultHandler {
     }
 
     private boolean isProcessModelFile(String fileName) {
-        return fileName.contains("processModel/");
+        return fileName.contains("processModel\\") || fileName.contains("processModel/");
     }
 }

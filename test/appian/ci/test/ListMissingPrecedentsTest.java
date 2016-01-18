@@ -40,22 +40,44 @@ public class ListMissingPrecedentsTest {
     }
 
     @Test
-    public void findAllUuids() throws ParserConfigurationException, SAXException, IOException {
+    public void findAllUuids() {
         
-        SAXParser saxParser = getSaxParser();
-
-        InputStream inputStream = ListMissingPrecedentsTest.class
-            .getClassLoader()
-            .getResourceAsStream("appian/ci/resources/dc36.xml");
-
-        UuidFinder uuidFinder = new UuidFinder("processModel/00000dc36-a2d8-8000-f92f-8f0000014e7a");
-        saxParser.parse(inputStream, uuidFinder);
+        String resourceFileName = "appian/ci/resources/dc36.xml";
         
-        List<String> uuidsFound = uuidFinder.getUuids();
+        List<String> uuidsFound = findAllUuidsFromResource(resourceFileName, "processModel\\");
         Assert.assertEquals(3, uuidsFound.size());
 
     }
 
+    @Test
+    public void processModelUuidsShouldBeExcluded()
+    {
+            
+        String resourceFileName = "appian/ci/resources/0002dc47-c97e-8000-f92f-7f0000014e7a.xml";
+        
+        List<String> uuidsFound = findAllUuidsFromResource(resourceFileName, "processModel\\");
+        Assert.assertEquals(3, uuidsFound.size());
+    }
+    
+    private List<String> findAllUuidsFromResource(String resourceFileName, String apparentDirectory) 
+         {
+        
+        try {
+            SAXParser saxParser = getSaxParser();
+            InputStream inputStream = ListMissingPrecedentsTest.class
+                .getClassLoader()
+                .getResourceAsStream(resourceFileName);
+            UuidFinder uuidFinder = new UuidFinder(apparentDirectory + resourceFileName);
+            saxParser.parse(inputStream, uuidFinder);
+            List<String> uuidsFound = uuidFinder.getUuids();
+            return uuidsFound;
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    
+    
     private SAXParser getSaxParser() throws ParserConfigurationException, SAXException {
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
