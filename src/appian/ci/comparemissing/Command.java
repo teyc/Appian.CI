@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 public class Command {
 
     private static final Logger logger = Logger.getLogger(appian.ci.listmissingprecedents.Command.class.getName());
+    private static final Charset defaultCharset = Charset.forName("UTF-16");
 
+        
     public void execute(Path source, Path target, String targetName) throws IOException {
-
-        final Charset defaultCharset = Charset.defaultCharset();
 
         List<String> uuidReportSource = Files.readAllLines(source, defaultCharset);
         List<String> uuidReportTarget = Files.readAllLines(target, defaultCharset);
