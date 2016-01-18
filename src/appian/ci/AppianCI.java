@@ -18,7 +18,7 @@ public class AppianCI {
         if (command == null || options == null) {
             showHelp(command);
 
-            if (options == null) {
+            if (options == null && command != null) {
                 System.err.println("I don't understand '" + command + "' command");
             }
 
@@ -80,8 +80,13 @@ public class AppianCI {
     }
 
     private static String getCommandName(Class klass) {
-        String[] names = klass.getPackage().getName().split("\\.", 4);
-        return names[names.length - 1];
+        
+        try {
+            return ((IOptions) klass.newInstance()).getCommand();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            throw new RuntimeException(ex);
+        }
+        
     }
 
     private static CommandLine parseCommandLine(Options options, String[] args) throws ParseException {
@@ -108,7 +113,7 @@ public class AppianCI {
 
     private static void showHelp(String command) {
         String header = "";
-        String footer = "";
+        String footer = "-------------------------------------------------------------";
         HelpFormatter formatter = new HelpFormatter();
 
         for (Class klass : getOptionTypes()) {
@@ -116,7 +121,7 @@ public class AppianCI {
             final String simpleName = getCommandName(klass);
 
             if (command == null) {
-                formatter.printHelp(76, "./Appian.CI " + simpleName, header, getOptions(command), footer);
+                formatter.printHelp(76, "./Appian.CI " + simpleName, header, getOptions(simpleName), footer);
             }
 
             if (simpleName.equalsIgnoreCase(command)) {

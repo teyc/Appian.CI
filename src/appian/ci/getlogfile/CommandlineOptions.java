@@ -21,4 +21,9 @@ public class CommandlineOptions implements IOptions {
                 .addOption(Option.builder(URL).desc("URL to Appian server including /suite e.g. https://xyz.appiancloud.com/suite").hasArg().required().build())
                 .addOption(Option.builder(LOGID).desc("Numeric code of the log file id.").hasArg().required().build());
     }
+
+    @Override
+    public String getCommand() {
+        return "GetLogFile";
+    }
 }

@@ -18,5 +18,10 @@ public class CommandlineOptions implements IOptions {
                 .addOption(Option.builder(TARGET).desc("Path to output file from QueryNameByUuid on the server where application will be deployed.").hasArg().required().build())
                 .addOption(Option.builder(TARGET_NAME).desc("Optional - name of the target system e.g. STAGING").hasArg().build());
     }
+
+    @Override
+    public String getCommand() {
+        return "CompareMissing";
+    }
     
 }

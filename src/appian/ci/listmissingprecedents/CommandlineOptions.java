@@ -12,4 +12,9 @@ public class CommandlineOptions implements IOptions  {
         return new Options()
                 .addOption(Option.builder(DIRECTORY).desc("Path to the unzipped exported file, unzipped").hasArg().required().build());
     }
+
+    @Override
+    public String getCommand() {
+        return "ListMissingPrecedents";
+    }
 }
