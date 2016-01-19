@@ -38,11 +38,18 @@ public class UuidFinder extends DefaultHandler {
         for (int i = 0; i < attributes.getLength(); i++) {
             String attributeQName = attributes.getQName(i);
             String attributeValue = attributes.getValue(i);
-            boolean isUuidAttribute = attributeQName.matches(uuidMatch);
-            if (isUuidAttribute && uuidUtil.fromString(attributeValue) != null) {
-                uuids.add(attributeValue);
+            boolean isUuidAttribute = isUuidAttribute(attributeQName);
+            for (String possibleUuid : attributeValue.split("@"))
+            {
+                if (isUuidAttribute && uuidUtil.fromString(possibleUuid) != null) {
+                    uuids.add(possibleUuid);
+                }
             }
         }
+    }
+
+    private boolean isUuidAttribute(String attributeQName) {
+        return attributeQName.matches(uuidMatch) || attributeQName.equals("a:uuid");
     }
 
     @Override
@@ -54,7 +61,7 @@ public class UuidFinder extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
     
-        boolean isUuidNode = qName.matches(uuidMatch);
+        boolean isUuidNode = isUuidAttribute(qName);
 
         if (isUuidNode && uuidUtil.fromString(textNodeAccumulator) != null) {
             uuids.add(textNodeAccumulator);

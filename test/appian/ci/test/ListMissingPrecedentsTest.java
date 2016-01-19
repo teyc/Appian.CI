@@ -40,6 +40,16 @@ public class ListMissingPrecedentsTest {
     }
 
     @Test
+    public void findRecordTypeUuid() {
+        
+        String resourceFileName = "appian/ci/resources/04b56abd-9183-4006-bcfc-3306d50fb39b.xml";
+        List<String> uuidsFound = findAllUuidsFromResource(resourceFileName, "recordTypes\\");
+        
+        Assert.assertTrue(exists(uuidsFound, "69b60df2-5d7a-4a85-ac2a-7d1f2cf9cb75"));
+        Assert.assertTrue(exists(uuidsFound, "_a-0000dbfc-f783-8000-9ba2-011c48011c48_57120"));
+    }
+    
+    @Test
     public void findAllUuids() {
         
         String resourceFileName = "appian/ci/resources/dc36.xml";
@@ -82,6 +92,17 @@ public class ListMissingPrecedentsTest {
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
         return saxParser;
+    }
+
+    private boolean exists(List<String> uuids, String needle) {
+        
+        for (String uuid: uuids)
+        {
+            if (uuid.equals(needle))
+                return true;
+        }
+        
+        return false;
     }
 
 }

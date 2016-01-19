@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <recordType name="TestRecord" a:uuid="04b56abd-9183-4006-bcfc-3306d50fb39b">
+        <a:pluralName>TestRecord- Entity Backed</a:pluralName>
+        <a:description>Test Record type - Entity Backed</a:description>
+        <a:urlStub>T16hNg</a:urlStub>
+        <a:source xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:DataStoreEntity" a:uuid="69b60df2-5d7a-4a85-ac2a-7d1f2cf9cb75@_a-0000dbfc-f783-8000-9ba2-011c48011c48_57120"/>
+        <a:listViewTemplateExpr>=#&quot;SYSTEM_SYSRULES_listViewItem&quot;(
+title: rf!code
+)
+</a:listViewTemplateExpr>
+        <a:fieldCfg name="Code">
+            <a:description></a:description>
+            <a:sourceRef>code</a:sourceRef>
+            <a:isSortable>false</a:isSortable>
+            <a:isSearchable>false</a:isSearchable>
+            <a:isFacet>true</a:isFacet>
+            <a:facetType>CUSTOM_BUCKETS_CLOSED</a:facetType>
+            <a:isExclusiveFacet>true</a:isExclusiveFacet>
+            <a:facetLabelExpr>=&quot;States&quot;</a:facetLabelExpr>
+            <a:facetOption>
+                <a:labelExpr>&quot;Code&quot;</a:labelExpr>
+                <a:facetOperator>IN</a:facetOperator>
+                <a:lowerLimitExpr></a:lowerLimitExpr>
+                <a:upperLimitExpr></a:upperLimitExpr>
+                <a:values>&quot;QLD&quot;</a:values>
+            </a:facetOption>
+            <a:sortOrderIndex>0</a:sortOrderIndex>
+            <a:facetOrderIndex>0</a:facetOrderIndex>
+        </a:fieldCfg>
+        <a:detailViewCfg>
+            <a:nameExpr>=&quot;Summary&quot;</a:nameExpr>
+            <a:uiExpr>=#&quot;SYSTEM_SYSRULES_dashboardLayout&quot;(
+firstColumnContents: {
+#&quot;SYSTEM_SYSRULES_textField&quot;(
+  label: &quot;Code&quot;,
+  labelPosition: &quot;ADJACENT&quot;,
+  value: rf!code,
+  readOnly: true
+),
+#&quot;SYSTEM_SYSRULES_textField&quot;(
+  label: &quot;Description&quot;,
+  labelPosition: &quot;ADJACENT&quot;,
+  value: rf!description,
+  readOnly: true
+),
+#&quot;SYSTEM_SYSRULES_textField&quot;(
+  label: &quot;CreateUser&quot;,
+  labelPosition: &quot;ADJACENT&quot;,
+  value: rf!createUser,
+  readOnly: true
+)
+}
+)
+</a:uiExpr>
+            <a:visibilityExpr>=true()</a:visibilityExpr>
+            <a:urlStub>summary</a:urlStub>
+            <a:headerExpr></a:headerExpr>
+        </a:detailViewCfg>
+        <a:defaultSortInfo>
+            <field>code</field>
+            <ascending>true</ascending>
+        </a:defaultSortInfo>
+        <a:isSystem>false</a:isSystem>
+        <a:dataSrcExpr></a:dataSrcExpr>
+        <a:facetsListExpr></a:facetsListExpr>
+        <a:defaultFiltersExpr></a:defaultFiltersExpr>
+        <a:security>16383</a:security>
+    </recordType>
+    <roleMap>
+        <role name="record_type_administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dbc1-8305-8000-9aee-01075c01075c_143</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+</recordTypeHaul>
