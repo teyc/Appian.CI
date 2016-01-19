@@ -26,8 +26,8 @@ public class Command {
         JunitReport junitReport = new JunitReport().name(targetName);
         for (AppianObject missing : missingObjects) {
 
-            String message = String.format("%s - %s %s", targetName, missing.description, missing.uuid);
-            junitReport.addError(message);
+            String message = String.format("[%s] %s - %s ", targetName, missing.uuid, missing.description);
+            junitReport.addError(missing.uuid, message);
         }
 
         junitReport.write(System.out);
