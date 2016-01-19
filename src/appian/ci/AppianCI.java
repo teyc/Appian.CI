@@ -90,8 +90,16 @@ public class AppianCI {
     }
 
     private static CommandLine parseCommandLine(Options options, String[] args) throws ParseException {
+        
+        Options helpOptions = new Options().addOption("help", "Help");
+        
         CommandLineParser parser = new DefaultParser();
-        CommandLine commandLine = parser.parse(options, args);
+        CommandLine commandLine;
+        
+        commandLine = parser.parse(helpOptions, args);
+        if (commandLine.hasOption("help")) return commandLine;
+        
+        commandLine = parser.parse(options, args);
         return commandLine;
     }
 
