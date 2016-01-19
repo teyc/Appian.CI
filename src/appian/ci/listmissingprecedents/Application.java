@@ -18,6 +18,11 @@ public class Application
     @Override
     public void execute(CommandLine commandLine) {
 
+        if (commandLine.hasOption(CommandlineOptions.HELP)) {
+            showHelp();
+            return;
+        }
+        
         try {
             UuidUtil uuidUtil = new UuidUtil();
             SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();

@@ -18,6 +18,12 @@ public class Application implements IApplication {
 
     @Override
     public void execute(CommandLine commandLine) {
+        
+        if (commandLine.hasOption(CommandlineOptions.HELP)) {
+            showHelp();
+            return;
+        }
+        
         try {
             UuidUtil uuidUtil2 = new UuidUtil();
             appian.ci.querynamebyuuid.Command queryCommand = new appian.ci.querynamebyuuid.Command(uuidUtil2);

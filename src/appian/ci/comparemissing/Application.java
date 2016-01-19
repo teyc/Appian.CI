@@ -12,6 +12,11 @@ public class Application implements IApplication {
     @Override
     public void execute(CommandLine commandLine) {
         
+        if (commandLine.hasOption(CommandlineOptions.HELP)) {
+            showHelp();
+            return;
+        }
+        
         try {
             Path source = Paths.get(commandLine.getOptionValue(CommandlineOptions.SOURCE));
             Path target = Paths.get(commandLine.getOptionValue(CommandlineOptions.TARGET));

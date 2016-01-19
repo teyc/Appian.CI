@@ -13,6 +13,11 @@ public class Application implements IApplication {
     @Override
     public void execute(CommandLine commandLine) {
         
+        if (commandLine.hasOption(CommandlineOptions.HELP)) {
+            showHelp();
+            return;
+        }
+        
         try {
             
             URL url = new URL(commandLine.getOptionValue(CommandlineOptions.URL));
