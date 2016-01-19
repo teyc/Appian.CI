@@ -12,7 +12,7 @@ public class AppianCI {
      */
     public static void main(String[] args) {
 
-        String command = args.length > 0 ? args[0] : null;
+        String command = getCommand(args);
         Options options = getOptions(command);
 
         if (command == null || options == null) {
@@ -20,6 +20,7 @@ public class AppianCI {
 
             if (options == null && command != null) {
                 System.err.println("I don't understand '" + command + "' command");
+                showHelp(null);
             }
 
             System.exit(-21);
@@ -52,7 +53,8 @@ public class AppianCI {
 
                 default:
 
-                    System.err.println("I don't understand '" + command + "' command");
+                    System.err.println("I don't understand the '" + command + "' command");
+                    
             }
 
         } catch (MissingOptionException ex) {
@@ -68,6 +70,12 @@ public class AppianCI {
 
         }
 
+    }
+
+    private static String getCommand(String[] args) {
+        String command = args.length > 0 ? args[0] : null;
+        command = (command !=null && !command.startsWith("-")) ? command : null;
+        return command;
     }
 
     private static Class[] getOptionTypes() {
