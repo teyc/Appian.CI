@@ -2,6 +2,7 @@ package appian.ci.getlogfile;
 
 import common.IApplication;
 import common.Encryption;
+import common.HelpPrinter;
 import common.SuggestEncrypt;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,11 +15,11 @@ public class Application implements IApplication {
         
         try {
             
-            URL url = new URL(commandLine.getOptionValue(appian.ci.getlogfile.CommandlineOptions.URL));
-            String username = commandLine.getOptionValue(appian.ci.getlogfile.CommandlineOptions.USERNAME);
-            String password = commandLine.getOptionValue(appian.ci.getlogfile.CommandlineOptions.PASSWORD);
-            String decryptionKey = commandLine.getOptionValue(appian.ci.getlogfile.CommandlineOptions.KEY);
-            String logFileId = commandLine.getOptionValue(appian.ci.getlogfile.CommandlineOptions.LOGID);
+            URL url = new URL(commandLine.getOptionValue(CommandlineOptions.URL));
+            String username = commandLine.getOptionValue(CommandlineOptions.USERNAME);
+            String password = commandLine.getOptionValue(CommandlineOptions.PASSWORD);
+            String decryptionKey = commandLine.getOptionValue(CommandlineOptions.KEY);
+            String logFileId = commandLine.getOptionValue(CommandlineOptions.LOGID);
             
             if (decryptionKey != null) {
                 password = new Encryption().decrypt(password, decryptionKey);
@@ -26,13 +27,20 @@ public class Application implements IApplication {
                 SuggestEncrypt.recommendCommandLineOption(System.out, password);
             }
             
-            String result = new appian.ci.getlogfile.Command().execute(url, logFileId, username, password);
+            String result = new Command().execute(url, logFileId, username, password);
             System.out.print(result);
             
         } catch (MalformedURLException ex) {
             
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public void showHelp() {
+        
+        new HelpPrinter().printHelp(new CommandlineOptions().getCommand(), System.out);
+        
     }
     
 }

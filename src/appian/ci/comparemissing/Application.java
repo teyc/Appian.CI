@@ -1,5 +1,6 @@
 package appian.ci.comparemissing;
 
+import common.HelpPrinter;
 import common.IApplication;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -25,4 +26,10 @@ public class Application implements IApplication {
         }
     }
     
+    @Override
+    public void showHelp() {
+        
+        new HelpPrinter().printHelp(new CommandlineOptions().getCommand(), System.out);
+        
+    }
 }

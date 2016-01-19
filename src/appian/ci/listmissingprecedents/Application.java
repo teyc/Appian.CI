@@ -2,6 +2,7 @@ package appian.ci.listmissingprecedents;
 
 import common.IApplication;
 import appian.ci.core.UuidUtil;
+import common.HelpPrinter;
 import static java.lang.System.out;
 import java.nio.file.FileSystems;
 import java.util.List;
@@ -33,4 +34,10 @@ public class Application
         }
     }
 
+    @Override
+    public void showHelp() {
+        
+        new HelpPrinter().printHelp(new CommandlineOptions().getCommand(), System.out);
+        
+    }
 }

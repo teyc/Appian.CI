@@ -13,6 +13,7 @@ public class CommandlineOptions implements IOptions {
     public static String USERNAME = "username";
     public static String PASSWORD = "password";
     public static String KEY = "key";
+    public static String HELP = "help";
    
     public Options getOptions()
     {
@@ -26,7 +27,8 @@ public class CommandlineOptions implements IOptions {
                 .addOption(Option.builder(PASSWORD).desc("Appian password").hasArg().required().build())
                 .addOption(Option.builder(KEY).desc("Optional decryption key for Appian password").hasArg().build())
                 .addOption(Option.builder(URL).desc("URL to Appian server including /suite e.g. https://xyz.appiancloud.com/suite").hasArg().required().build())
-                .addOptionGroup(uuidOptions);
+                .addOptionGroup(uuidOptions)
+                .addOption(Option.builder(HELP).desc("Help").build());
     }
 
     @Override

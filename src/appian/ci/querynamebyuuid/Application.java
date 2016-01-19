@@ -3,6 +3,7 @@ package appian.ci.querynamebyuuid;
 import common.IApplication;
 import appian.ci.core.UuidUtil;
 import common.Encryption;
+import common.HelpPrinter;
 import common.HttpRequest;
 import common.SuggestEncrypt;
 import java.io.File;
@@ -43,6 +44,13 @@ public class Application implements IApplication {
         } catch (MalformedURLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void showHelp() {
+        
+        new HelpPrinter().printHelp(new CommandlineOptions().getCommand(), System.out);
+        
     }
     
 }
