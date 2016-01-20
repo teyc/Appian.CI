@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
 
 public class Application implements IApplication {
 
@@ -34,7 +35,10 @@ public class Application implements IApplication {
     @Override
     public void showHelp() {
         
-        new HelpPrinter().printHelp(new CommandlineOptions().getCommand(), System.out);
+        CommandlineOptions cmdline = new CommandlineOptions();
+        
+        new HelpPrinter().printHelp(cmdline.getCommand(), cmdline.getOptions(), System.out);
+        
         
     }
 }

@@ -55,8 +55,9 @@ public class Application implements IApplication {
     @Override
     public void showHelp() {
         
-        new HelpPrinter().printHelp(new CommandlineOptions().getCommand(), System.out);
+        final CommandlineOptions cmdline = new CommandlineOptions();
         
+        new HelpPrinter().printHelp(cmdline.getCommand(), cmdline.getOptions(), System.out);
     }
     
 }
