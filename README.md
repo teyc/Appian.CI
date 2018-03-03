@@ -1,13 +1,21 @@
 Appian Deployment Tools
 =========================
 
+Appian doesn't really have a great story for deploying changes
+from Dev to Test to UAT and to Production environments. This tool
+aims to solve that by having your changes checked into source control
+and building deployment packages off source control from a build server.
+
+
 Overview
 ---------
 
-This suite of command line tools assumes
-the following developer workflow for 
-source control, build and subsequent
-deployment of Appian applications
+You will need to adopt the following development workflow for this
+deployment tools to work.
+
+Firstly you need to use a version control system. 
+
+Secondly, you should have some kind of build server, and a deployment service.
 
 Workflow to ensure all precedents are present
 ---------------------------------------------
